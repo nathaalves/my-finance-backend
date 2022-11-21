@@ -1,3 +1,6 @@
 import type { User } from '@prisma/client';
 
-export type CreateUser = Omit<User, 'id' | 'createdAt' | 'updatedAt'>;
+export interface CreateUser extends Pick<User, 'email' | 'name'> {
+  password: string;
+  confirm_password: string;
+}
