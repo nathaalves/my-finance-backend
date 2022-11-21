@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NONDE_ENV=test jest",
+    "test": "jest",
     "start": "ts-node src/server.ts",
     "dev": "nodemon src/server.ts"
   },
