@@ -25,10 +25,10 @@ class CustomEnvironment extends NodeEnvironment {
     execSync(`${prismaCli} migrate dev`);
   }
 
-  // async teardown() {
-  //   await prisma.$executeRaw`DROP SCHEMA IF EXISTS "test" CASCADE`;
-  //   await prisma.$disconnect();
-  // }
+  async teardown() {
+    await prisma.$executeRaw`DROP SCHEMA IF EXISTS "test" CASCADE`;
+    await prisma.$disconnect();
+  }
 }
 
 module.exports = CustomEnvironment;
