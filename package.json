@@ -27,6 +27,7 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@prisma/client": "^4.6.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
