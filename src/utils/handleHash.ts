@@ -3,7 +3,7 @@ import 'dotenv/config';
 
 function createHash(data: string) {
   const SALT_ROUNDS = Number(process.env.BCRYPT_SALT_ROUNDS) || 12;
-  console.log(SALT_ROUNDS);
+
   const salt = genSaltSync(SALT_ROUNDS);
 
   const encryptedData = hashSync(data, salt);
