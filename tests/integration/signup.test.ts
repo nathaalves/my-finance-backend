@@ -23,6 +23,16 @@ describe('Register', () => {
 
     expect(result.status).toBe(201);
   });
+
+  it('should not allow registration if the user is already registered', async () => {
+    const userInfo = signupInformations();
+
+    await request.post('/signup').send(userInfo);
+
+    const result = await request.post('/signup').send(userInfo);
+
+    expect(result.status).toBe(409);
+  });
 });
 
 afterAll(async () => {
