@@ -33,6 +33,48 @@ describe('Register', () => {
 
     expect(result.status).toBe(409);
   });
+
+  it('should not accept registration if email is invalid', async () => {
+    const userInfo = signupInformations({
+      email: 'invalid-email',
+    });
+
+    const result = await request.post('/signup').send(userInfo);
+
+    expect(result.status).toBe(400);
+  });
+
+  it('shold not accept registration if name is invalid', async () => {
+    const userInfo = signupInformations({
+      name: 'invalid-name',
+    });
+
+    const result = await request.post('/signup').send(userInfo);
+
+    expect(result.status).toBe(400);
+  });
+
+  it('shold not accept registration if password or caonfirm_password is invalid', async () => {
+    const userInfo = signupInformations({
+      password: 'invalid-password',
+      confirm_password: 'invalid-password',
+    });
+
+    const result = await request.post('/signup').send(userInfo);
+
+    expect(result.status).toBe(400);
+  });
+
+  it('shold not accept registration if password and caonfirm_password contains less than 8 characters', async () => {
+    const userInfo = signupInformations({
+      password: '1aB$',
+      confirm_password: '1aB$',
+    });
+
+    const result = await request.post('/signup').send(userInfo);
+
+    expect(result.status).toBe(400);
+  });
 });
 
 afterAll(async () => {
