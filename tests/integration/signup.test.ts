@@ -75,6 +75,16 @@ describe('Register', () => {
 
     expect(result.status).toBe(400);
   });
+
+  it('shold not accept registration if password does not matchs with caonfirm_password', async () => {
+    const userInfo = signupInformations({
+      confirm_password: '1aB$1aB$1aB$',
+    });
+
+    const result = await request.post('/signup').send(userInfo);
+
+    expect(result.status).toBe(409);
+  });
 });
 
 afterAll(async () => {
