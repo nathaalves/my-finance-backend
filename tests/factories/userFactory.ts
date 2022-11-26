@@ -1,10 +1,15 @@
 import { faker } from '@faker-js/faker';
-import { CreateUser } from '../../src/types/userType';
+import { Signup } from '../../src/types/userType';
 
 export function signupInformations(
-  changeInformations?: Partial<CreateUser>
-): CreateUser {
-  const password = faker.internet.password();
+  changeInformations?: Partial<Signup>
+): Signup {
+  const password = faker.internet.password(
+    100,
+    false,
+    /[0-9a-zA-Z@$!%*?&]/,
+    ''
+  );
 
   let userInfo = {
     name: faker.name.firstName(),
