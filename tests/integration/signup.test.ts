@@ -19,7 +19,7 @@ describe('Register', () => {
   it('should create a new user sending valid informations', async () => {
     const userInfo = generateSignupInformations();
 
-    const result = await request.post('/signup').send(userInfo);
+    const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(201);
   });
@@ -27,9 +27,9 @@ describe('Register', () => {
   it('should not allow registration if the user is already registered', async () => {
     const userInfo = generateSignupInformations();
 
-    await request.post('/signup').send(userInfo);
+    await request.post('/auth/signup').send(userInfo);
 
-    const result = await request.post('/signup').send(userInfo);
+    const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(409);
   });
@@ -39,7 +39,7 @@ describe('Register', () => {
       email: 'invalid-email',
     });
 
-    const result = await request.post('/signup').send(userInfo);
+    const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(400);
   });
@@ -49,7 +49,7 @@ describe('Register', () => {
       name: 'invalid-name',
     });
 
-    const result = await request.post('/signup').send(userInfo);
+    const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(400);
   });
@@ -60,7 +60,7 @@ describe('Register', () => {
       confirm_password: 'invalid-password',
     });
 
-    const result = await request.post('/signup').send(userInfo);
+    const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(400);
   });
@@ -71,7 +71,7 @@ describe('Register', () => {
       confirm_password: '1aB$',
     });
 
-    const result = await request.post('/signup').send(userInfo);
+    const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(400);
   });
@@ -81,7 +81,7 @@ describe('Register', () => {
       confirm_password: '1aB$1aB$1aB$',
     });
 
-    const result = await request.post('/signup').send(userInfo);
+    const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(409);
   });
