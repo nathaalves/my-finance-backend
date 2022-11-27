@@ -22,3 +22,36 @@ export function generateSignupInformations(
 
   return userInfo;
 }
+
+export function generateSigninInformations(
+  changeInformations?: Partial<Signin>
+): Signin {
+  const password = faker.internet.password(
+    100,
+    false,
+    /[0-9a-zA-Z@$!%*?&]/,
+    ''
+  );
+
+  let userInfo = {
+    email: faker.internet.email(),
+    password,
+  };
+
+  userInfo = { ...userInfo, ...changeInformations };
+
+  return userInfo;
+}
+
+export function generatePayload(
+  changeInformations?: Partial<JWTPayload>
+): JWTPayload {
+  let userInfo = {
+    id: faker.datatype.uuid(),
+    name: faker.name.firstName(),
+  };
+
+  userInfo = { ...userInfo, ...changeInformations };
+
+  return userInfo;
+}
