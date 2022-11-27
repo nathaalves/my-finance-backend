@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { Signup } from '../../src/types/userType';
+import { JWTPayload, Signin, Signup } from '../../src/types/userType';
 
-export function signupInformations(
+export function generateSignupInformations(
   changeInformations?: Partial<Signup>
 ): Signup {
   const password = faker.internet.password(
