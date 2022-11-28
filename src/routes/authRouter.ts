@@ -1,11 +1,13 @@
 import { Router } from 'express';
-import { signup } from '../controllers/authController';
+import { signin, signup } from '../controllers/authController';
 import {
   verifyIfUserAlreadyRegistered,
   checkIfPasswordsMatch,
+  verifyIfUserExists,
+  checkIfPasswordIsCorrect,
 } from '../middlewares/authMidleware';
 import { validateSchema } from '../middlewares/validateSchema';
-import { signupSchema } from '../schemas/authSchemas';
+import { signinSchema, signupSchema } from '../schemas/authSchemas';
 
 const authRouter = Router();
 
@@ -15,6 +17,14 @@ authRouter.post(
   checkIfPasswordsMatch,
   verifyIfUserAlreadyRegistered,
   signup
+);
+
+authRouter.post(
+  '/signin',
+  validateSchema(signinSchema),
+  verifyIfUserExists,
+  checkIfPasswordIsCorrect,
+  signin
 );
 
 export { authRouter };
