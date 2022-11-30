@@ -1,4 +1,4 @@
-import { genSaltSync, hashSync } from 'bcrypt';
+import { compareSync, genSaltSync, hashSync } from 'bcrypt';
 import 'dotenv/config';
 
 function createHash(data: string) {
@@ -11,4 +11,8 @@ function createHash(data: string) {
   return encryptedData;
 }
 
-export { createHash };
+function compareHash(data: string, hash: string) {
+  return compareSync(data, hash);
+}
+
+export { createHash, compareHash };

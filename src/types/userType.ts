@@ -8,3 +8,9 @@ export interface Signup extends Pick<User, 'email' | 'name'> {
 export type UserData = Omit<Signup, 'confirm_password'>;
 
 export type insertUser = Pick<User, 'email' | 'name' | 'password_hash'>;
+
+export type JWTPayload = Pick<User, 'id' | 'name'>;
+
+export interface Signin extends Pick<User, 'email'> {
+  password: string;
+}
