@@ -1,0 +1,223 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Autenticação",
+    "description": "Esta é uma API que permite a autenticação de usuários",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "name": "Nathã Alves Araujo",
+      "email": "nathaalvesaraujo@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/",
+      "description": "Servidor local"
+    }
+  ],
+  "basePath": "/",
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Cria um novo usuário",
+        "tags": ["Autentencação"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Signup"
+              },
+              "example": {
+                "name": "John Doe",
+                "email": "teste@teste.com",
+                "password": "1aB$1aB$",
+                "confirm_password": "1aB$1aB$"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "b4a081b1-9c38-4964-b5da-76bbd0be1e0b"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidBodySchemaError"
+                },
+                "example": {
+                  "message": "Corpo da requisição inválido",
+                  "details": [
+                    "Email inválido",
+                    "A senha deve ter no mínimo 8 caracteres",
+                    "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Usuário já registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessRuleError"
+                },
+                "example": {
+                  "message": "Usuário já registrado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "summary": "Fazer login na aplicação",
+        "tags": ["Autentencação"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Signin"
+              },
+              "example": {
+                "email": "teste@teste.com",
+                "password": "1aB$1aB$"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login feito com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SigninResponse"
+                },
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTMwOGIwLThiZTgtNDAxNC1iNzZjLTJlZDQ1MWJmNGRjNCIsIm5hbWUiOiJKb2huIiwiaWF0IjoxNjY5ODIyODA1LCJleHAiOjE2Njk4MjI4MzV9.QVgJ8guPhXo-fVOQFmkOacOGPMBBFKrv_aVKxFbPnFQ"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidBodySchemaError"
+                },
+                "example": {
+                  "message": "Corpo da requisição inválido",
+                  "details": [
+                    "Email inválido",
+                    "A senha deve ter no mínimo 8 caracteres",
+                    "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email ou senha inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessRuleError"
+                },
+                "example": {
+                  "message": "Email ou senha inválido."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Signin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Signup": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirm_password": {
+            "type": "string"
+          }
+        }
+      },
+      "SigninResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "InvalidBodySchemaError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BusinessRuleError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
