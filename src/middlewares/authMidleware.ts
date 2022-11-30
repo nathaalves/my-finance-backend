@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
+import { BusinessRuleError } from '../Errors/businessRuleError';
 import { findUserByEmail } from '../repositories/userRepository';
 import { compareHash } from '../utils/handleHash';
 
 async function verifyIfUserAlreadyRegistered(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) {
   const { email } = req.body;
@@ -12,7 +13,7 @@ async function verifyIfUserAlreadyRegistered(
   const user = await findUserByEmail(email);
 
   if (user) {
-    return res.status(409).send({ message: 'User already registered' });
+    throw new BusinessRuleError('Usuário já registrado', 401);
   }
 
   next();
@@ -28,7 +29,7 @@ async function verifyIfUserExists(
   const user = await findUserByEmail(email);
 
   if (!user) {
-    return res.status(401).send({ message: 'Invalid password or e-mail!' });
+    throw new BusinessRuleError('Email ou senha inválido', 401);
   }
 
   res.locals.user = user;
@@ -37,16 +38,19 @@ async function verifyIfUserExists(
 
 async function checkIfPasswordsMatch(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) {
   const { password, confirm_password } = req.body;
 
   if (password !== confirm_password) {
-    res.status(409).send('passwords does not match');
-  } else {
-    next();
+    throw new BusinessRuleError(
+      'Password diferente do password de confirmação',
+      409
+    );
   }
+
+  next();
 }
 
 async function checkIfPasswordIsCorrect(
@@ -60,7 +64,7 @@ async function checkIfPasswordIsCorrect(
   const isValid = compareHash(password, `${passwordHash}`);
 
   if (!isValid) {
-    return res.status(401).send('Invalid e-mail or password!');
+    throw new BusinessRuleError('Email ou senha inválido', 401);
   }
 
   next();

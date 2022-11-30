@@ -1,11 +1,11 @@
 export class SchemaError extends Error {
-  error: string;
+  message: string;
   details: string[];
   statusCode: number;
 
-  constructor(error: string, details: string[], statusCode: number) {
+  constructor(message: string, details: string[], statusCode: number) {
     super();
-    this.error = error;
+    this.message = message;
     this.details = details;
     this.statusCode = statusCode;
   }
