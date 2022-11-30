@@ -4,12 +4,8 @@ import { JWTPayload, Signin, Signup } from '../../src/types/userType';
 export function generateSignupInformations(
   changeInformations?: Partial<Signup>
 ): Signup {
-  const password = faker.internet.password(
-    100,
-    false,
-    /[0-9a-zA-Z@$!%*?&]/,
-    ''
-  );
+  const password =
+    'aB0@$!%*?&' + faker.internet.password(10, false, /[0-9a-zA-Z@$!%*?&]/, '');
 
   let userInfo = {
     name: faker.name.firstName(),
@@ -26,12 +22,8 @@ export function generateSignupInformations(
 export function generateSigninInformations(
   changeInformations?: Partial<Signin>
 ): Signin {
-  const password = faker.internet.password(
-    100,
-    false,
-    /[0-9a-zA-Z@$!%*?&]/,
-    ''
-  );
+  const password =
+    'aB0@$!%*?&' + faker.internet.password(10, false, /[0-9a-zA-Z@$!%*?&]/, '');
 
   let userInfo = {
     email: faker.internet.email(),
