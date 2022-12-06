@@ -9,7 +9,9 @@
     "test": "npm run test:load-env jest",
     "prestart": "npx prisma migrate deploy",
     "start": "ts-node src/server.ts",
-    "dev": "dotenv -e .env.development nodemon src/server.ts"
+    "dev:load-env": "dotenv -e .env.development",
+    "predev": "npm run dev:load-env -- npx prisma migrate dev",
+    "dev": "npm run dev:load-env nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",
