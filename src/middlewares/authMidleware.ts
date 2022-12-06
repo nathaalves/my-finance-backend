@@ -13,7 +13,7 @@ async function verifyIfUserAlreadyRegistered(
   const user = await findUserByEmail(email);
 
   if (user) {
-    throw new BusinessRuleError('Usuário já registrado', 401);
+    throw new BusinessRuleError('Usuário já registrado', 409);
   }
 
   next();

@@ -8,7 +8,8 @@ const passwordPattern =
 export const signupSchema = joi.object<Signup>({
   name: joi.string().pattern(namePattern).required().messages({
     'string.base': "O campo 'nome' deve ser do tipo texto",
-    'string.pattern.base': "O campo 'nome' deve conter ao menos 2 letras",
+    'string.pattern.base':
+      "O campo 'nome' deve conter ao menos 2 letras enão possuir caracteres especiais ou números",
     'string.empty': "O campo 'nome' não pode estar vazio",
     'any.required': "O campo 'nome' é obrigatório",
   }),
@@ -22,7 +23,7 @@ export const signupSchema = joi.object<Signup>({
     'string.base': "O campo 'senha' deve ser do tipo texto",
     'string.min': 'A senha deve ter no mínimo 8 caracteres',
     'string.pattern.base':
-      'A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial',
+      'A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial (@$!%*?&)',
     'string.empty': "O campo 'senha' não pode estar vazio",
     'any.required': "O campo 'senha' é obrigatório",
   }),
@@ -35,9 +36,9 @@ export const signupSchema = joi.object<Signup>({
       'string.base': "O campo 'confirmação' deve ser do tipo texto",
       'string.min': 'A senha de confirmação deve ter no mínimo 8 caracteres',
       'string.pattern.base':
-        'A senha de confirmação deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial',
-      'string.empty': "O campo 'confirmação' não pode estar vazio",
-      'any.required': "O campo 'confirmação' é obrigatório",
+        'A senha de confirmação deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial (@$!%*?&)',
+      'string.empty': "O campo 'confirmar senha' não pode estar vazio",
+      'any.required': "O campo 'confirmar senha' é obrigatório",
     }),
 });
 
@@ -52,8 +53,8 @@ export const signinSchema = joi.object<Signin>({
     'string.base': "O campo 'senha deve ser do tipo texto",
     'string.min': 'A senha deve ter no mínimo 8 caracteres',
     'string.pattern.base':
-      'A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial',
-    'string.empty': "O campo 'senha não pode estar vazio",
-    'any.required': "O campo 'senha é obrigatório",
+      'A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial (@$!%*?&)',
+    'string.empty': "O campo 'senha' não pode estar vazio",
+    'any.required': "O campo 'senha' é obrigatório",
   }),
 });
