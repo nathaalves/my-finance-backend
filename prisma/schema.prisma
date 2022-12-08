@@ -18,6 +18,8 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  categories Category[]
+
   @@map("users")
 }
 
@@ -33,13 +35,29 @@ model IconGroup {
 }
 
 model Icon {
-  id          String    @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   iconGroupId String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  iconGroup   IconGroup @relation(fields: [iconGroupId], references: [id])
-  
+  categories Category[]
+  iconGroup  IconGroup  @relation(fields: [iconGroupId], references: [id])
+
   @@map("icons")
+}
+
+model Category {
+  id        String @id @default(uuid())
+  name      String
+  type      String
+  iconId    String
+  iconColor String
+  userId    String
+
+  icon Icon @relation(fields: [iconId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, userId])
+  @@map("categories")
 }
