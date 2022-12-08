@@ -1,9 +1,17 @@
+import { categories } from '../../prisma/data/categoriesData';
 import { prisma } from '../config/prisma';
 import { insertUser } from '../types/userType';
 
 async function addUser(user: insertUser) {
   const data = await prisma.user.create({
-    data: user,
+    data: {
+      ...user,
+      categories: {
+        createMany: {
+          data: categories,
+        },
+      },
+    },
   });
 
   return data;
