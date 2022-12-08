@@ -25,12 +25,14 @@ model User {
 }
 
 model Category {
-  id        String @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
   type      String
   icon      String
   iconColor String
   userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   transactions Transaction[]
 
