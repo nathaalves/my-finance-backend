@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import { signin, signup } from '../controllers/authController';
+import { reauthenticate, signin, signup } from '../controllers/authController';
 import {
   verifyIfUserAlreadyRegistered,
   checkIfPasswordsMatch,
   verifyIfUserExists,
   checkIfPasswordIsCorrect,
+  verifyRefreshToken,
 } from '../middlewares/authMidleware';
 import { validateSchema } from '../middlewares/validateSchema';
 import { signinSchema, signupSchema } from '../schemas/authSchemas';
@@ -26,5 +27,7 @@ authRouter.post(
   checkIfPasswordIsCorrect,
   signin
 );
+
+authRouter.post('/reauthenticate', verifyRefreshToken, reauthenticate);
 
 export { authRouter };
