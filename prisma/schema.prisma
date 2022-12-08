@@ -27,5 +27,19 @@ model IconGroup {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  icons Icon[]
+
   @@map("icon_groups")
+}
+
+model Icon {
+  id          String    @id @default(uuid())
+  name        String
+  iconGroupId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  iconGroup   IconGroup @relation(fields: [iconGroupId], references: [id])
+  
+  @@map("icons")
 }
