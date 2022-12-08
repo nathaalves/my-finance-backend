@@ -18,7 +18,8 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  categories Category[]
+  categories   Category[]
+  transactions Transaction[]
 
   @@map("users")
 }
@@ -55,9 +56,27 @@ model Category {
   iconColor String
   userId    String
 
+  transactions Transaction[]
+
   icon Icon @relation(fields: [iconId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([name, userId])
   @@map("categories")
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  value       Int
+  description String
+  date        DateTime @db.Date
+  userId      String
+  categoryId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
 }
