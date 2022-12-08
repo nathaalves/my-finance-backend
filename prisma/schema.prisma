@@ -24,41 +24,16 @@ model User {
   @@map("users")
 }
 
-model IconGroup {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  icons Icon[]
-
-  @@map("icon_groups")
-}
-
-model Icon {
-  id          String   @id @default(uuid())
-  name        String
-  iconGroupId String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  categories Category[]
-  iconGroup  IconGroup  @relation(fields: [iconGroupId], references: [id])
-
-  @@map("icons")
-}
-
 model Category {
   id        String @id @default(uuid())
   name      String
   type      String
-  iconId    String
+  icon      String
   iconColor String
   userId    String
 
   transactions Transaction[]
 
-  icon Icon @relation(fields: [iconId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([name, userId])
