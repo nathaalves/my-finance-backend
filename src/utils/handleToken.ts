@@ -11,6 +11,18 @@ function generateToken(payload: JWTPayload) {
   return token;
 }
 
+function validateToken(token: string) {
+  const SECRET_KEY = process.env.JWT_SECRET_KEY || 'secret';
+
+  try {
+    const payload = verify(token, SECRET_KEY);
+
+    return payload;
+  } catch (error) {
+    throw new BusinessRuleError('Token inválido.', 401);
+  }
+}
+
 function generateRefreshToken(payload: JWTPayload) {
   const SECRET_KEY = process.env.JWT_REFRESH_TOKEN_SECRET_KEY || 'secret';
   const EXPIRES_IN = process.env.JWT_REFRESH_TOKEN_EXPIRES_IN || '40s';
@@ -32,4 +44,9 @@ function validateRefreshToken(refreshToken: string) {
   }
 }
 
-export { generateToken, generateRefreshToken, validateRefreshToken };
+export {
+  generateRefreshToken,
+  generateToken,
+  validateRefreshToken,
+  validateToken,
+};
