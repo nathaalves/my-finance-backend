@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { BusinessRuleError } from '../Errors/businessRuleError';
 import { findUserByEmail } from '../repositories/userRepository';
 import { compareHash } from '../utils/handleHash';
-import { validateRefreshToken } from '../utils/handleToken';
+import { validateRefreshToken, validateToken } from '../utils/handleToken';
 
 async function verifyIfUserAlreadyRegistered(
   req: Request,
@@ -71,6 +71,20 @@ async function checkIfPasswordIsCorrect(
   next();
 }
 
+async function verifyToken(req: Request, res: Response, next: NextFunction) {
+  const authorization = req.headers.authorization;
+  const token = authorization?.split(' ')[1];
+
+  if (!token) {
+    throw new BusinessRuleError('Token não encontrado.', 401);
+  }
+
+  const payload = validateToken(token);
+  res.locals.payload = payload;
+
+  next();
+}
+
 function verifyRefreshToken(req: Request, res: Response, next: NextFunction) {
   const authorization = req.headers.authorization;
   const refreshToken = authorization?.split(' ')[1];
@@ -86,9 +100,10 @@ function verifyRefreshToken(req: Request, res: Response, next: NextFunction) {
 }
 
 export {
-  verifyRefreshToken,
+  checkIfPasswordIsCorrect,
+  checkIfPasswordsMatch,
   verifyIfUserAlreadyRegistered,
   verifyIfUserExists,
-  checkIfPasswordsMatch,
-  checkIfPasswordIsCorrect,
+  verifyRefreshToken,
+  verifyToken,
 };
