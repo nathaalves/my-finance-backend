@@ -28,12 +28,19 @@ describe('Log in', () => {
 
     const result = await request.post('/auth/signin').send({ email, password });
 
-    const { token } = JSON.parse(result.text);
-    const SECRET_KEY = `${process.env.JWT_SECRET_KEY}`;
-    const payload = verify(token, SECRET_KEY);
+    const { token, refreshToken } = JSON.parse(result.text);
+
+    const ACCESS_SECRET_KEY = `${process.env.JWT_SECRET_KEY}`;
+    const tokenPayload = verify(token, ACCESS_SECRET_KEY);
+
+    const REFRESH_SECRET_KEY = `${process.env.JWT_REFRESH_TOKEN_SECRET_KEY}`;
+    const refreshPayload = verify(refreshToken, REFRESH_SECRET_KEY);
 
     expect(result.status).toBe(200);
-    expect(payload).toHaveProperty('id');
+    expect(tokenPayload).toHaveProperty('id');
+    expect(tokenPayload).toHaveProperty('name');
+    expect(refreshPayload).toHaveProperty('id');
+    expect(refreshPayload).toHaveProperty('name');
   });
 
   it('should not allow login if a valid email is not submitted', async () => {
