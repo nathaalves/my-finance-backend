@@ -2,13 +2,26 @@ import { sign, verify } from 'jsonwebtoken';
 import { BusinessRuleError } from '../Errors';
 import { JWTPayload } from '../types/userType';
 
-function generateToken(payload: JWTPayload) {
-  const SECRET_KEY = process.env.JWT_SECRET_KEY || 'secret';
-  const EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30s';
+function generateToken(
+  payload: JWTPayload,
+  secretKey: string | undefined,
+  expiresIn: string | undefined
+) {
+  if (!secretKey) {
+    throw new BusinessRuleError(
+      'É necessário a definição de uma chave secreta para a geração do token.',
+      409
+    );
+  }
 
-  const token = sign(payload, SECRET_KEY, { expiresIn: EXPIRES_IN });
+  if (!expiresIn) {
+    throw new BusinessRuleError(
+      'É nececssário a definição do tempo de expiração do token.',
+      409
+    );
+  }
 
-  return token;
+  return sign(payload, secretKey, { expiresIn });
 }
 
 function validateToken(token: string) {
@@ -23,15 +36,6 @@ function validateToken(token: string) {
   }
 }
 
-function generateRefreshToken(payload: JWTPayload) {
-  const SECRET_KEY = process.env.JWT_REFRESH_TOKEN_SECRET_KEY || 'secret';
-  const EXPIRES_IN = process.env.JWT_REFRESH_TOKEN_EXPIRES_IN || '40s';
-
-  const refreshToken = sign(payload, SECRET_KEY, { expiresIn: EXPIRES_IN });
-
-  return refreshToken;
-}
-
 function validateRefreshToken(refreshToken: string) {
   const SECRET_KEY = process.env.JWT_REFRESH_TOKEN_SECRET_KEY || 'secret';
 
@@ -44,9 +48,4 @@ function validateRefreshToken(refreshToken: string) {
   }
 }
 
-export {
-  generateRefreshToken,
-  generateToken,
-  validateRefreshToken,
-  validateToken,
-};
+export { generateToken, validateRefreshToken, validateToken };
