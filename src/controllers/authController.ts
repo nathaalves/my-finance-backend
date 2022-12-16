@@ -24,9 +24,12 @@ async function signin(req: Request, res: Response) {
 async function reauthenticate(req: Request, res: Response) {
   const { id, name } = res.locals.payload;
 
-  const token = generateToken({ id, name });
+  const SECRET_KEY = process.env.JWT_ACCESS_TOKEN_SECRET_KEY;
+  const EXPIRES_IN = process.env.JWT_ACCESS_TOKEN_EXPIRES_IN;
 
-  res.status(200).send(token);
+  const accessToken = generateToken({ id, name }, SECRET_KEY, EXPIRES_IN);
+
+  res.status(200).send({ accessToken });
 }
 
 export { signup, signin, reauthenticate };
