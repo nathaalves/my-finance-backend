@@ -24,11 +24,9 @@ function generateToken(
   return sign(payload, secretKey, { expiresIn });
 }
 
-function validateToken(token: string) {
-  const SECRET_KEY = process.env.JWT_SECRET_KEY || 'secret';
-
+function validateToken(token: string, secretKey: string) {
   try {
-    const payload = verify(token, SECRET_KEY);
+    const payload = verify(token, secretKey);
 
     return payload;
   } catch (error) {
@@ -36,16 +34,4 @@ function validateToken(token: string) {
   }
 }
 
-function validateRefreshToken(refreshToken: string) {
-  const SECRET_KEY = process.env.JWT_REFRESH_TOKEN_SECRET_KEY || 'secret';
-
-  try {
-    const payload = verify(refreshToken, SECRET_KEY);
-
-    return payload;
-  } catch (error) {
-    throw new BusinessRuleError('Refresh token inválido.', 401);
-  }
-}
-
-export { generateToken, validateRefreshToken, validateToken };
+export { generateToken, validateToken };
