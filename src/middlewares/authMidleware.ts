@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { BusinessRuleError } from '../Errors/businessRuleError';
 import { findUserByEmail } from '../repositories/userRepository';
 import { compareHash } from '../utils/handleHash';
-import { validateRefreshToken, validateToken } from '../utils/handleToken';
+import { validateToken } from '../utils/handleToken';
 
 async function verifyIfUserAlreadyRegistered(
   req: Request,
@@ -71,32 +71,24 @@ async function checkIfPasswordIsCorrect(
   next();
 }
 
-async function verifyToken(req: Request, res: Response, next: NextFunction) {
-  const authorization = req.headers.authorization;
-  const token = authorization?.split(' ')[1];
+function verifyToken(secretKey: string | undefined) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const authorization = req.headers.authorization;
+    const token = authorization?.split(' ')[1];
 
-  if (!token) {
-    throw new BusinessRuleError('Token não encontrado.', 401);
-  }
+    if (!token) {
+      throw new BusinessRuleError('Token não encontrado.', 401);
+    }
 
-  const payload = validateToken(token);
-  res.locals.payload = payload;
+    if (!secretKey) {
+      throw new BusinessRuleError('Chave secreta não definida.', 409);
+    }
 
-  next();
-}
+    const payload = validateToken(token, secretKey);
+    res.locals.payload = payload;
 
-function verifyRefreshToken(req: Request, res: Response, next: NextFunction) {
-  const authorization = req.headers.authorization;
-  const refreshToken = authorization?.split(' ')[1];
-
-  if (!refreshToken) {
-    throw new BusinessRuleError('Refresh token não encontrado.', 401);
-  }
-
-  const payload = validateRefreshToken(refreshToken);
-  res.locals.payload = payload;
-
-  next();
+    next();
+  };
 }
 
 export {
@@ -104,6 +96,5 @@ export {
   checkIfPasswordsMatch,
   verifyIfUserAlreadyRegistered,
   verifyIfUserExists,
-  verifyRefreshToken,
   verifyToken,
 };
