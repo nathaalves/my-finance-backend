@@ -5,10 +5,12 @@ import {
   checkIfPasswordsMatch,
   verifyIfUserExists,
   checkIfPasswordIsCorrect,
-  verifyRefreshToken,
+  verifyToken,
 } from '../middlewares/authMidleware';
 import { validateSchema } from '../middlewares/validateSchema';
 import { signinSchema, signupSchema } from '../schemas/authSchemas';
+
+const SECRCET_KEY = process.env.JWT_REFRESH_TOKEN_SECRET_KEY;
 
 const authRouter = Router();
 
@@ -28,6 +30,6 @@ authRouter.post(
   signin
 );
 
-authRouter.post('/reauthenticate', verifyRefreshToken, reauthenticate);
+authRouter.post('/reauthenticate', verifyToken(SECRCET_KEY), reauthenticate);
 
 export { authRouter };
