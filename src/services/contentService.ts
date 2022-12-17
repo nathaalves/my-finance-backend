@@ -4,6 +4,7 @@ import { requestUserContentByType } from '../repositories/contentRepository';
 interface Categories extends Partial<Category> {
   transactions: {
     id: string;
+    note: string;
     value: number;
     description: string;
     date: Date;

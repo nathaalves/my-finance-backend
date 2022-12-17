@@ -44,7 +44,7 @@ model Category {
 
 model Transaction {
   id          String   @id @default(uuid())
-  name        String
+  note        String
   description String
   value       Int
   date        DateTime @db.Date

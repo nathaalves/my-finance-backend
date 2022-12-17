@@ -7,13 +7,6 @@ export async function requestUserContentByType(userId: string, type: string) {
       user: {
         id: userId,
       },
-      transactions: {
-        some: {
-          value: {
-            gt: 0,
-          },
-        },
-      },
     },
     select: {
       id: true,
@@ -23,7 +16,7 @@ export async function requestUserContentByType(userId: string, type: string) {
       transactions: {
         select: {
           id: true,
-          name: true,
+          note: true,
           value: true,
           description: true,
           date: true,

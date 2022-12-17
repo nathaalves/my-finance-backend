@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { encryptPassword } from '../services/userService';
-import { generateRefreshToken, generateToken } from '../utils/handleToken';
+import { generateToken } from '../utils/handleToken';
 
 async function signup(req: Request, res: Response) {
   const { name, email, password } = req.body;
@@ -13,18 +13,23 @@ async function signup(req: Request, res: Response) {
 async function signin(req: Request, res: Response) {
   const { id, name } = res.locals.user;
 
-  const token = generateToken({ id, name });
-  const refreshToken = generateRefreshToken({ id, name });
+  const SECRET_KEY = process.env.JWT_REFRESH_TOKEN_SECRET_KEY;
+  const EXPIRES_IN = process.env.JWT_REFRESH_TOKEN_EXPIRES_IN;
 
-  res.status(200).send({ token, refreshToken });
+  const refreshToken = generateToken({ id, name }, SECRET_KEY, EXPIRES_IN);
+
+  res.status(200).send({ refreshToken });
 }
 
 async function reauthenticate(req: Request, res: Response) {
   const { id, name } = res.locals.payload;
 
-  const token = generateToken({ id, name });
+  const SECRET_KEY = process.env.JWT_ACCESS_TOKEN_SECRET_KEY;
+  const EXPIRES_IN = process.env.JWT_ACCESS_TOKEN_EXPIRES_IN;
 
-  res.status(200).send(token);
+  const accessToken = generateToken({ id, name }, SECRET_KEY, EXPIRES_IN);
+
+  res.status(200).send({ accessToken });
 }
 
 export { signup, signin, reauthenticate };
