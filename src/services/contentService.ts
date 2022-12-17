@@ -12,7 +12,8 @@ interface Categories extends Partial<Category> {
 }
 
 function handleContent(content: Categories[]) {
-  let total = 0;
+  let totalValue = 0;
+  let transactionsAmount = 0;
   const treatedContent = content.map((category) => {
     let sum = 0;
     let count = 0;
@@ -20,9 +21,10 @@ function handleContent(content: Categories[]) {
     category.transactions.forEach((transaction) => {
       sum += transaction.value;
       count++;
+      transactionsAmount++;
     });
 
-    total += sum;
+    totalValue += sum;
     return {
       ...category,
       count,
@@ -30,7 +32,7 @@ function handleContent(content: Categories[]) {
     };
   });
 
-  return { categories: treatedContent, total };
+  return { categories: treatedContent, totalValue, transactionsAmount };
 }
 
 export async function requestContent(userId: string) {
@@ -40,11 +42,16 @@ export async function requestContent(userId: string) {
   for (let i = 0; i < types.length; i++) {
     const content = await requestUserContentByType(userId, types[i]);
 
-    const { categories, total } = handleContent(content);
+    const { categories, totalValue, transactionsAmount } =
+      handleContent(content);
 
     allContent = {
       ...allContent,
-      [types[i] === 'entradas' ? 'inflow' : 'outflow']: { categories, total },
+      [types[i] === 'entradas' ? 'inflow' : 'outflow']: {
+        categories,
+        totalValue,
+        transactionsAmount,
+      },
     };
   }
 
