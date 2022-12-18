@@ -11,14 +11,14 @@ const transactionRouter = Router();
 
 transactionRouter.post(
   '/create',
-  validateSchema(transactionSchema.addTransaction),
+  validateSchema.body(transactionSchema.bodySchema),
   verifyToken(SECRET_KEY),
   transactionController.createTransaction
 );
 
 transactionRouter.delete(
   '/delete/:id',
-  validateSchema(transactionSchema.deleteTransaction),
+  validateSchema.params(transactionSchema.paramsSchema),
   verifyToken(SECRET_KEY),
   transactionMiddleware.verifyIfTransactionExists,
   transactionMiddleware.verifyTransactionBelongsUser,
