@@ -4,7 +4,11 @@ import { SchemaError } from '../Errors/schemaError';
 
 export function validateSchema(schema: ObjectSchema) {
   return (req: Request, _res: Response, next: NextFunction) => {
-    const { error } = schema.validate(req.body, {
+    let requestType = null;
+    requestType = Object.keys(req.body).length !== 0 ? req.body : null;
+    requestType = Object.keys(req.params).length !== 0 ? req.params : null;
+
+    const { error } = schema.validate(requestType, {
       abortEarly: false,
     });
 
