@@ -5,6 +5,10 @@ async function insertTransaction(data: InsertTransaction) {
   await prisma.transaction.create({ data });
 }
 
+async function findTransactionById(id: string) {
+  return await prisma.transaction.findUnique({ where: { id } });
+}
+
 async function deleteTransaction(id: string) {
   await prisma.transaction.delete({ where: { id } });
 }
@@ -12,4 +16,5 @@ async function deleteTransaction(id: string) {
 export const transactionRepository = {
   insertTransaction,
   deleteTransaction,
+  findTransactionById,
 };
