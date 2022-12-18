@@ -16,7 +16,7 @@ const authRouter = Router();
 
 authRouter.post(
   '/signup',
-  validateSchema(signupSchema),
+  validateSchema.body(signupSchema),
   checkIfPasswordsMatch,
   verifyIfUserAlreadyRegistered,
   signup
@@ -24,7 +24,7 @@ authRouter.post(
 
 authRouter.post(
   '/signin',
-  validateSchema(signinSchema),
+  validateSchema.body(signinSchema),
   verifyIfUserExists,
   checkIfPasswordIsCorrect,
   signin
