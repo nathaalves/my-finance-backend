@@ -5,4 +5,11 @@ async function insertTransaction(data: InsertTransaction) {
   await prisma.transaction.create({ data });
 }
 
-export const transactionRepository = { insertTransaction };
+async function deleteTransaction(id: string) {
+  await prisma.transaction.delete({ where: { id } });
+}
+
+export const transactionRepository = {
+  insertTransaction,
+  deleteTransaction,
+};
