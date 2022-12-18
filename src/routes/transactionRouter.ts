@@ -25,4 +25,14 @@ transactionRouter.delete(
   transactionController.deleteTransaction
 );
 
+transactionRouter.put(
+  '/update/:id',
+  validateSchema.params(transactionSchema.paramsSchema),
+  validateSchema.body(transactionSchema.bodySchema),
+  verifyToken(SECRET_KEY),
+  transactionMiddleware.verifyIfTransactionExists,
+  transactionMiddleware.verifyTransactionBelongsUser,
+  transactionController.updateTransaction
+);
+
 export { transactionRouter };
