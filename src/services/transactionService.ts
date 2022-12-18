@@ -8,4 +8,8 @@ async function insertData(data: TransactionBody, userId: string) {
   });
 }
 
-export const transactionService = { insertData };
+async function deleteTransaction(id: string) {
+  await transactionRepository.deleteTransaction(id);
+}
+
+export const transactionService = { insertData, deleteTransaction };
