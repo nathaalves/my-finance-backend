@@ -11,4 +11,12 @@ async function createTransaction(req: Request, res: Response) {
   res.status(201).send('Transação criada com sucesso.');
 }
 
-export const transactionController = { createTransaction };
+async function deleteTransaction(req: Request, res: Response) {
+  const { id } = req.params;
+
+  await transactionService.deleteTransaction(id);
+
+  res.status(200).send('Transação deletada com sucesso.');
+}
+
+export const transactionController = { createTransaction, deleteTransaction };
