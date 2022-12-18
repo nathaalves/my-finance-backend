@@ -9,7 +9,7 @@ async function verifyIfTransactionExists(
   const { id } = req.params;
 
   const transaction = await transactionRepository.findTransactionById(id);
-  console.log(transaction);
+
   if (!transaction) {
     return res.status(404).send('Transação não encontrada.');
   }
