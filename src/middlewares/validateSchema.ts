@@ -2,13 +2,9 @@ import { ObjectSchema } from 'joi';
 import { Request, Response, NextFunction } from 'express';
 import { SchemaError } from '../Errors/schemaError';
 
-export function validateSchema(schema: ObjectSchema) {
+function validate(schema: ObjectSchema, type: 'body' | 'params') {
   return (req: Request, _res: Response, next: NextFunction) => {
-    let requestType = null;
-    requestType = Object.keys(req.body).length !== 0 ? req.body : null;
-    requestType = Object.keys(req.params).length !== 0 ? req.params : null;
-
-    const { error } = schema.validate(requestType, {
+    const { error } = schema.validate(req[type as keyof Request], {
       abortEarly: false,
     });
 
@@ -23,3 +19,13 @@ export function validateSchema(schema: ObjectSchema) {
     next();
   };
 }
+
+function params(schema: ObjectSchema) {
+  return validate(schema, 'params');
+}
+
+function body(schema: ObjectSchema) {
+  return validate(schema, 'body');
+}
+
+export const validateSchema = { params, body };

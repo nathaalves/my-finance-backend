@@ -1,7 +1,7 @@
 import joi from 'joi';
 import { TransactionBody } from '../types/transactionTypes';
 
-const addTransaction = joi.object<TransactionBody>({
+const bodySchema = joi.object<TransactionBody>({
   description: joi.string().required(),
   note: joi.string(),
   value: joi.number().required(),
@@ -9,8 +9,8 @@ const addTransaction = joi.object<TransactionBody>({
   date: joi.date().required(),
 });
 
-const deleteTransaction = joi.object({
+const paramsSchema = joi.object<{ id: string }>({
   id: joi.string().uuid().required(),
 });
 
-export const transactionSchema = { addTransaction, deleteTransaction };
+export const transactionSchema = { bodySchema, paramsSchema };
