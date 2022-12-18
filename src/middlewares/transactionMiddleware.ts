@@ -19,6 +19,22 @@ async function verifyIfTransactionExists(
   next();
 }
 
+async function verifyTransactionBelongsUser(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { transaction } = res.locals;
+  const { id: userId } = res.locals.payload;
+
+  if (transaction?.userId !== userId) {
+    return res.status(401).send('Transação não pertence ao usuário.');
+  }
+
+  next();
+}
+
 export const transactionMiddleware = {
   verifyIfTransactionExists,
+  verifyTransactionBelongsUser,
 };
