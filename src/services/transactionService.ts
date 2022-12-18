@@ -12,4 +12,12 @@ async function deleteTransaction(id: string) {
   await transactionRepository.deleteTransaction(id);
 }
 
-export const transactionService = { insertData, deleteTransaction };
+async function updateTransaction(id: string, data: TransactionBody) {
+  await transactionRepository.updateTransaction(id, data);
+}
+
+export const transactionService = {
+  insertData,
+  deleteTransaction,
+  updateTransaction,
+};
