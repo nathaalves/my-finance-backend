@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { transactionController } from '../controllers/transactionController';
 import { verifyToken } from '../middlewares/authMidleware';
+import { transactionMiddleware } from '../middlewares/transactionMiddleware';
 import { validateSchema } from '../middlewares/validateSchema';
 import { transactionSchema } from '../schemas/transactionSchema';
 
@@ -10,9 +11,18 @@ const transactionRouter = Router();
 
 transactionRouter.post(
   '/create',
-  validateSchema(transactionSchema),
+  validateSchema(transactionSchema.addTransaction),
   verifyToken(SECRET_KEY),
   transactionController.createTransaction
+);
+
+transactionRouter.delete(
+  '/delete/:id',
+  validateSchema(transactionSchema.deleteTransaction),
+  verifyToken(SECRET_KEY),
+  transactionMiddleware.verifyIfTransactionExists,
+  transactionMiddleware.verifyTransactionBelongsUser,
+  transactionController.deleteTransaction
 );
 
 export { transactionRouter };
