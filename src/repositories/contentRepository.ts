@@ -20,6 +20,7 @@ export async function requestUserContentByType(userId: string, type: string) {
           value: true,
           description: true,
           date: true,
+          categoryId: true,
         },
         orderBy: {
           date: 'desc',
