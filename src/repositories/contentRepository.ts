@@ -22,9 +22,14 @@ export async function requestUserContentByType(userId: string, type: string) {
           date: true,
           categoryId: true,
         },
-        orderBy: {
-          date: 'desc',
-        },
+        orderBy: [
+          {
+            date: 'desc',
+          },
+          {
+            createdAt: 'desc',
+          },
+        ],
       },
     },
   });
