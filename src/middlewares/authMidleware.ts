@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { BusinessRuleError } from '../Errors/businessRuleError';
+import { CustomError } from '../errors';
 import { findUserByEmail } from '../repositories/userRepository';
 import { compareHash } from '../utils/handleHash';
 import { validateToken } from '../utils/handleToken';
@@ -14,7 +14,7 @@ async function verifyIfUserAlreadyRegistered(
   const user = await findUserByEmail(email);
 
   if (user) {
-    throw new BusinessRuleError('Usuário já registrado', 409);
+    throw new CustomError('Usuário já registrado', 409);
   }
 
   next();
@@ -30,7 +30,7 @@ async function verifyIfUserExists(
   const user = await findUserByEmail(email);
 
   if (!user) {
-    throw new BusinessRuleError('Email ou senha inválido', 401);
+    throw new CustomError('Email ou senha inválido', 401);
   }
 
   res.locals.user = user;
@@ -45,10 +45,7 @@ async function checkIfPasswordsMatch(
   const { password, confirm_password } = req.body;
 
   if (password !== confirm_password) {
-    throw new BusinessRuleError(
-      'Password diferente do password de confirmação',
-      409
-    );
+    throw new CustomError('Password diferente do password de confirmação', 409);
   }
 
   next();
@@ -65,7 +62,7 @@ async function checkIfPasswordIsCorrect(
   const isValid = compareHash(password, `${passwordHash}`);
 
   if (!isValid) {
-    throw new BusinessRuleError('Email ou senha inválido', 401);
+    throw new CustomError('Email ou senha inválido', 401);
   }
 
   next();
@@ -85,7 +82,7 @@ function verifyToken(type: 'access' | 'refresh') {
     }
 
     if (!token) {
-      throw new BusinessRuleError('Token não encontrado.', 401);
+      throw new CustomError('Token não encontrado.', 401);
     }
 
     const payload = validateToken(token, type);

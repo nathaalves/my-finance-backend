@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-import { BusinessRuleError } from '../Errors';
+import { CustomError } from '../errors';
 import { JWTPayload } from '../types/userTypes';
 
 function loadEnvs(type: 'access' | 'refresh') {
@@ -17,14 +17,14 @@ function loadEnvs(type: 'access' | 'refresh') {
   }
 
   if (!secretKey) {
-    throw new BusinessRuleError(
+    throw new CustomError(
       'É necessário a definição de uma chave secreta para a geração do token.',
       409
     );
   }
 
   if (!expiresIn) {
-    throw new BusinessRuleError(
+    throw new CustomError(
       'É nececssário a definição do tempo de expiração do token.',
       409
     );
@@ -44,7 +44,7 @@ function validateToken(token: string, type: 'access' | 'refresh') {
 
   const payload = verify(token, secretKey, (err, decoded) => {
     if (err) {
-      throw new BusinessRuleError('Token expirado ou inválido.', 498);
+      throw new CustomError('Token expirado ou inválido.', 498);
     }
     return decoded;
   });
