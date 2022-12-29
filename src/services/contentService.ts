@@ -32,6 +32,10 @@ function handleContent(content: Categories[]) {
     };
   });
 
+  treatedContent.sort(function (a, b) {
+    return b.sum - a.sum;
+  });
+
   return { categories: treatedContent, totalValue, transactionsAmount };
 }
 
