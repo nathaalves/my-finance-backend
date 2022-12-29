@@ -1,5 +1,5 @@
 import joi from 'joi';
-import { Signin, Signup } from '../types/userType';
+import { Signin, Signup } from '../types/userTypes';
 
 const namePattern = /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,}$/;
 const passwordPattern =
