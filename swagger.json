@@ -80,7 +80,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRuleError"
+                  "$ref": "#/components/schemas/CustomError"
                 },
                 "example": {
                   "message": "Usuário já registrado"
@@ -146,7 +146,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BusinessRuleError"
+                  "$ref": "#/components/schemas/CustomError"
                 },
                 "example": {
                   "message": "Email ou senha inválido."
@@ -210,7 +210,7 @@
           }
         }
       },
-      "BusinessRuleError": {
+      "CustomError": {
         "type": "object",
         "properties": {
           "message": {

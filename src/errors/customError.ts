@@ -1,4 +1,4 @@
-export class BusinessRuleError extends Error {
+export class CustomError extends Error {
   message: string;
   statusCode: number;
 

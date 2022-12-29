@@ -1,6 +1,6 @@
 import { ObjectSchema } from 'joi';
 import { Request, Response, NextFunction } from 'express';
-import { SchemaError } from '../Errors/schemaError';
+import { SchemaError } from '../errors';
 
 function validate(schema: ObjectSchema, type: 'body' | 'params') {
   return (req: Request, _res: Response, next: NextFunction) => {

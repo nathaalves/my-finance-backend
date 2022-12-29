@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { BusinessRuleError, SchemaError } from '../Errors';
+import { CustomError, SchemaError } from '../errors';
 
 export function errorHandler(
-  err: SchemaError | BusinessRuleError,
+  err: SchemaError | CustomError,
   _req: Request,
   res: Response,
   _next: NextFunction
@@ -16,7 +16,7 @@ export function errorHandler(
     });
   }
 
-  if (err instanceof BusinessRuleError) {
+  if (err instanceof CustomError) {
     return res.status(err.statusCode).send({
       message: err.message,
     });
