@@ -10,24 +10,23 @@ async function signup(req: Request, res: Response) {
   res.status(201).send({ id });
 }
 
-async function signin(req: Request, res: Response) {
+async function signin(_req: Request, res: Response) {
   const { id, name } = res.locals.user;
 
-  const SECRET_KEY = process.env.JWT_REFRESH_TOKEN_SECRET_KEY;
-  const EXPIRES_IN = process.env.JWT_REFRESH_TOKEN_EXPIRES_IN;
+  const refreshToken = generateToken({ id, name, type: 'refresh' });
 
-  const refreshToken = generateToken({ id, name }, SECRET_KEY, EXPIRES_IN);
-
-  res.status(200).send({ refreshToken });
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+  });
+  res.sendStatus(200);
 }
 
-async function reauthenticate(req: Request, res: Response) {
+async function reauthenticate(_req: Request, res: Response) {
   const { id, name } = res.locals.payload;
 
-  const SECRET_KEY = process.env.JWT_ACCESS_TOKEN_SECRET_KEY;
-  const EXPIRES_IN = process.env.JWT_ACCESS_TOKEN_EXPIRES_IN;
-
-  const accessToken = generateToken({ id, name }, SECRET_KEY, EXPIRES_IN);
+  const accessToken = generateToken({ id, name, type: 'access' });
 
   res.status(200).send({ accessToken });
 }
