@@ -10,8 +10,6 @@ import {
 import { validateSchema } from '../middlewares/validateSchema';
 import { signinSchema, signupSchema } from '../schemas/authSchemas';
 
-const SECRCET_KEY = process.env.JWT_REFRESH_TOKEN_SECRET_KEY;
-
 const authRouter = Router();
 
 authRouter.post(
@@ -30,6 +28,6 @@ authRouter.post(
   signin
 );
 
-authRouter.post('/reauthenticate', verifyToken(SECRCET_KEY), reauthenticate);
+authRouter.post('/reauthenticate', verifyToken('refresh'), reauthenticate);
 
 export { authRouter };

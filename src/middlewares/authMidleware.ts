@@ -71,20 +71,24 @@ async function checkIfPasswordIsCorrect(
   next();
 }
 
-function verifyToken(secretKey: string | undefined) {
+function verifyToken(type: 'access' | 'refresh') {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const authorization = req.headers.authorization;
-    const token = authorization?.split(' ')[1];
+    let token: string | undefined;
+
+    if (type === 'access') {
+      const authorization = req.headers.authorization;
+      token = authorization?.split(' ')[1];
+    }
+
+    if (type === 'refresh') {
+      token = req.cookies.refreshToken;
+    }
 
     if (!token) {
       throw new BusinessRuleError('Token não encontrado.', 401);
     }
 
-    if (!secretKey) {
-      throw new BusinessRuleError('Chave secreta não definida.', 409);
-    }
-
-    const payload = validateToken(token, secretKey);
+    const payload = validateToken(token, type);
     res.locals.payload = payload;
 
     next();
