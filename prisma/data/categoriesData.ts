@@ -18,7 +18,7 @@ export const categories = [
     iconColor: '#EA6697',
   },
   {
-    name: 'Comida',
+    name: 'Alimentação',
     type: 'saidas',
     icon: 'MdLocalDining',
     iconColor: '#AA5999',
