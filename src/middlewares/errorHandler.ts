@@ -7,8 +7,9 @@ export function errorHandler(
   res: Response,
   _next: NextFunction
 ) {
+  console.error(err);
+
   if (err instanceof SchemaError) {
-    console.error(err);
     return res.status(err.statusCode).send({
       message: err.message,
       details: err.details,
@@ -16,9 +17,10 @@ export function errorHandler(
   }
 
   if (err instanceof BusinessRuleError) {
-    console.error(err);
     return res.status(err.statusCode).send({
       message: err.message,
     });
   }
+
+  res.status(500).send('Erro inesperado.');
 }
