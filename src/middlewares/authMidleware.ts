@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { CustomError } from '../errors';
+import { authRepository } from '../repositories/authRepository';
 import { findUserByEmail } from '../repositories/userRepository';
 import { compareHash } from '../utils/handleHash';
 import { validateToken } from '../utils/handleToken';
@@ -92,10 +93,33 @@ function verifyToken(type: 'access' | 'refresh') {
   };
 }
 
+async function verifyIfSessionExists(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { sessionId } = res.locals.payload;
+
+  const session = await authRepository.findSession(sessionId);
+
+  if (!session) {
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
+
+    throw new CustomError('Sessão não encontrada', 401);
+  }
+
+  next();
+}
+
 export {
   checkIfPasswordIsCorrect,
   checkIfPasswordsMatch,
   verifyIfUserAlreadyRegistered,
   verifyIfUserExists,
+  verifyIfSessionExists,
   verifyToken,
 };
