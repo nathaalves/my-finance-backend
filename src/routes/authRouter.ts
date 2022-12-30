@@ -1,11 +1,17 @@
 import { Router } from 'express';
-import { reauthenticate, signin, signup } from '../controllers/authController';
+import {
+  logout,
+  reauthenticate,
+  signin,
+  signup,
+} from '../controllers/authController';
 import {
   verifyIfUserAlreadyRegistered,
   checkIfPasswordsMatch,
   verifyIfUserExists,
   checkIfPasswordIsCorrect,
   verifyToken,
+  verifyIfSessionExists,
 } from '../middlewares/authMidleware';
 import { validateSchema } from '../middlewares/validateSchema';
 import { signinSchema, signupSchema } from '../schemas/authSchemas';
@@ -28,6 +34,18 @@ authRouter.post(
   signin
 );
 
-authRouter.post('/reauthenticate', verifyToken('refresh'), reauthenticate);
+authRouter.post(
+  '/reauthenticate',
+  verifyToken('refresh'),
+  verifyIfSessionExists,
+  reauthenticate
+);
+
+authRouter.get(
+  '/logout',
+  verifyToken('refresh'),
+  verifyIfSessionExists,
+  logout
+);
 
 export { authRouter };
