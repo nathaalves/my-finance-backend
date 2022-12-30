@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { authService } from '../services/authService';
 import { encryptPassword } from '../services/userService';
 import { generateToken } from '../utils/handleToken';
 
@@ -44,4 +45,10 @@ async function reauthenticate(_req: Request, res: Response) {
   res.status(200).send({ accessToken });
 }
 
-export { signup, signin, reauthenticate };
+async function logout(_req: Request, res: Response) {
+  const { sessionId } = res.locals.payload;
+  await authService.removeSession(sessionId);
+  res.status(200).send('Logout feito com sucesso.');
+}
+
+export { signup, signin, logout, reauthenticate };
