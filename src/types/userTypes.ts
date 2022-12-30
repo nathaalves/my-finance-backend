@@ -14,7 +14,8 @@ export type Signin = Pick<User, 'email'> & {
 };
 
 export type JWTPayload = {
-  id: string;
+  userId: string;
   name: string;
   type: 'access' | 'refresh';
+  sessionId: string;
 };
