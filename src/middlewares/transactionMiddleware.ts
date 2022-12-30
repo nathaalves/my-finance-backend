@@ -25,7 +25,7 @@ async function verifyTransactionBelongsUser(
   next: NextFunction
 ) {
   const { transaction } = res.locals;
-  const { id: userId } = res.locals.payload;
+  const { userId } = res.locals.payload;
 
   if (transaction?.userId !== userId) {
     return res.status(401).send('Transação não pertence ao usuário.');

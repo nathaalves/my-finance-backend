@@ -4,7 +4,7 @@ import { TransactionBody } from '../types/transactionTypes';
 
 async function createTransaction(req: Request, res: Response) {
   const body = req.body as TransactionBody;
-  const { id: userId }: { id: string } = res.locals.payload;
+  const { userId } = res.locals.payload;
 
   await transactionService.insertData(body, userId);
 
