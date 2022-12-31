@@ -1,9 +1,17 @@
 import { Router } from 'express';
 import { getContent } from '../controllers/contentController';
-import { verifyToken } from '../middlewares/authMidleware';
+import {
+  verifyIfSessionExists,
+  verifyToken,
+} from '../middlewares/authMidleware';
 
 const contentRouter = Router();
 
-contentRouter.get('/', verifyToken('access'), getContent);
+contentRouter.get(
+  '/',
+  verifyToken('access'),
+  verifyIfSessionExists,
+  getContent
+);
 
 export { contentRouter };
