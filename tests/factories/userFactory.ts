@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { JWTPayload, Signin, Signup } from '../../src/types/userType';
+import type { JWTPayload, Signin, Signup } from '../../src/types/userTypes';
 
 export function generateSignupInformations(
   changeInformations?: Partial<Signup>
@@ -38,12 +38,14 @@ export function generateSigninInformations(
 export function generatePayload(
   changeInformations?: Partial<JWTPayload>
 ): JWTPayload {
-  let userInfo = {
-    id: faker.datatype.uuid(),
+  let payloadInfo: JWTPayload = {
+    sessionId: faker.datatype.uuid(),
+    userId: faker.datatype.uuid(),
     name: faker.name.firstName(),
+    type: 'access',
   };
 
-  userInfo = { ...userInfo, ...changeInformations };
+  payloadInfo = { ...payloadInfo, ...changeInformations };
 
-  return userInfo;
+  return payloadInfo;
 }
