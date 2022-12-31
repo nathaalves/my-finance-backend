@@ -6,9 +6,9 @@ async function createTransaction(req: Request, res: Response) {
   const body = req.body as TransactionBody;
   const { userId } = res.locals.payload;
 
-  await transactionService.insertData(body, userId);
+  const transaction = await transactionService.insertData(body, userId);
 
-  res.status(201).send('Transação criada com sucesso.');
+  res.status(201).send(transaction);
 }
 
 async function deleteTransaction(req: Request, res: Response) {
@@ -23,9 +23,9 @@ async function updateTransaction(req: Request, res: Response) {
   const { id } = req.params;
   const body = req.body as TransactionBody;
 
-  await transactionService.updateTransaction(id, body);
+  const transaction = await transactionService.updateTransaction(id, body);
 
-  res.status(200).send('Transação atualizada com sucesso.');
+  res.status(200).send(transaction);
 }
 
 export const transactionController = {
