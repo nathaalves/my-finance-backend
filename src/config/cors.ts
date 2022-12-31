@@ -6,7 +6,7 @@ export const allowedOrigins = [
   'http://127.0.0.1:5173',
   'http://localhost:5173',
   'https://my-finance-frontend.vercel.app',
-  'https://frontend-test-one-silk.vercel.app/login',
+  'https://frontend-test-one-silk.vercel.app',
 ];
 
 export const options = {
