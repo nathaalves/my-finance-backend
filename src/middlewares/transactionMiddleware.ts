@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { CustomError } from '../errors';
 import { transactionRepository } from '../repositories/transactionRepository';
 
 async function verifyIfTransactionExists(
@@ -11,7 +12,7 @@ async function verifyIfTransactionExists(
   const transaction = await transactionRepository.findTransactionById(id);
 
   if (!transaction) {
-    return res.status(404).send('Transação não encontrada.');
+    throw new CustomError('Transação não encontrada.', 404);
   }
 
   res.locals.transaction = transaction;
@@ -28,7 +29,7 @@ async function verifyTransactionBelongsUser(
   const { userId } = res.locals.payload;
 
   if (transaction?.userId !== userId) {
-    return res.status(401).send('Transação não pertence ao usuário.');
+    throw new CustomError('Transação não pertence ao usuário.', 401);
   }
 
   next();

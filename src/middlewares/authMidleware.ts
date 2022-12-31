@@ -109,7 +109,7 @@ async function verifyIfSessionExists(
       secure: true,
     });
 
-    throw new CustomError('Sessão não encontrada', 401);
+    throw new CustomError('Sessão não encontrada.', 401);
   }
 
   next();
