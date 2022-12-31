@@ -68,7 +68,7 @@ export const categories = [
   {
     name: 'Outros',
     type: 'entradas',
-    icon: 'IoMdHelpCircleOutline',
+    icon: 'MdHelpOutline',
     iconColor: '#EF4F20',
   },
 ];
