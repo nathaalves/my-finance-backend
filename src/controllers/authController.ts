@@ -16,10 +16,19 @@ async function signin(_req: Request, res: Response) {
 
   const { id: sessionId } = await authService.createSession(userId);
 
-  const refreshToken = generateToken({
+  const payload = {
     sessionId,
     userId,
     name,
+  };
+
+  const accessToken = generateToken({
+    ...payload,
+    type: 'access',
+  });
+
+  const refreshToken = generateToken({
+    ...payload,
     type: 'refresh',
   });
 
@@ -27,9 +36,10 @@ async function signin(_req: Request, res: Response) {
     httpOnly: true,
     sameSite: 'none',
     secure: true,
-    maxAge: 2 * 60 * 60 * 1000,
+    maxAge: 15 * 24 * 60 * 60 * 1000,
   });
-  res.sendStatus(200);
+
+  res.status(200).send({ accessToken });
 }
 
 async function reauthenticate(_req: Request, res: Response) {
