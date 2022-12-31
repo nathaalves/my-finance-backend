@@ -2,11 +2,13 @@ import { prisma } from '../config/prisma';
 import { InsertTransaction, TransactionBody } from '../types/transactionTypes';
 
 async function insertTransaction(data: InsertTransaction) {
-  await prisma.transaction.create({ data });
+  const transaction = await prisma.transaction.create({ data });
+  return transaction;
 }
 
 async function findTransactionById(id: string) {
-  return await prisma.transaction.findUnique({ where: { id } });
+  const transaction = await prisma.transaction.findUnique({ where: { id } });
+  return transaction;
 }
 
 async function deleteTransaction(id: string) {
@@ -14,7 +16,8 @@ async function deleteTransaction(id: string) {
 }
 
 async function updateTransaction(id: string, data: TransactionBody) {
-  await prisma.transaction.update({ where: { id }, data });
+  const transaction = await prisma.transaction.update({ where: { id }, data });
+  return transaction;
 }
 
 export const transactionRepository = {
