@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API de Autenticação",
-    "description": "Esta é uma API que permite a autenticação de usuários",
+    "title": "MyFinance API",
+    "description": "",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
       "name": "Nathã Alves Araujo",
@@ -21,7 +21,7 @@
     "/auth/signup": {
       "post": {
         "summary": "Cria um novo usuário",
-        "tags": ["Autentencação"],
+        "tags": ["Autenticação"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -94,7 +94,7 @@
     "/auth/signin": {
       "post": {
         "summary": "Fazer login na aplicação",
-        "tags": ["Autentencação"],
+        "tags": ["Autenticação"],
         "produces": ["application/json"],
         "requestBody": {
           "content": {
@@ -118,7 +118,7 @@
                   "$ref": "#/components/schemas/SigninResponse"
                 },
                 "example": {
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTMwOGIwLThiZTgtNDAxNC1iNzZjLTJlZDQ1MWJmNGRjNCIsIm5hbWUiOiJKb2huIiwiaWF0IjoxNjY5ODIyODA1LCJleHAiOjE2Njk4MjI4MzV9.QVgJ8guPhXo-fVOQFmkOacOGPMBBFKrv_aVKxFbPnFQ"
+                  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTMwOGIwLThiZTgtNDAxNC1iNzZjLTJlZDQ1MWJmNGRjNCIsIm5hbWUiOiJKb2huIiwiaWF0IjoxNjY5ODIyODA1LCJleHAiOjE2Njk4MjI4MzV9.QVgJ8guPhXo-fVOQFmkOacOGPMBBFKrv_aVKxFbPnFQ"
                 }
               }
             }
@@ -150,6 +150,479 @@
                 },
                 "example": {
                   "message": "Email ou senha inválido."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content": {
+      "get": {
+        "summary": "Obtem todo o conteúdo do usuário",
+        "tags": ["Conteúdo"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conteúdo obtido com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SigninResponse"
+                },
+                "example": {
+                  "inflow": {
+                    "categories": [
+                      {
+                        "id": "d8c38eb7-5ed9-4d3c-97bb-5f6a2e8fadb5",
+                        "name": "Salario",
+                        "icon": "MdAccountBalanceWallet",
+                        "iconColor": "#4EA993",
+                        "transactions": [],
+                        "count": 0,
+                        "sum": 0
+                      },
+                      {
+                        "id": "7ae16f92-c605-438c-83ca-57e23c935776",
+                        "name": "Presente",
+                        "icon": "MdCardGiftcard",
+                        "iconColor": "#1C93CC",
+                        "transactions": [],
+                        "count": 0,
+                        "sum": 0
+                      }
+                    ],
+                    "totalValue": 0,
+                    "transactionsAmount": 0
+                  },
+                  "outflow": {
+                    "categories": [
+                      {
+                        "id": "2fd7dae9-8afa-4537-9423-0573d5b21f21",
+                        "name": "Viagem",
+                        "icon": "MdFlight",
+                        "iconColor": "#F58E1F",
+                        "transactions": [],
+                        "count": 0,
+                        "sum": 0
+                      },
+                      {
+                        "id": "91e87ea3-7122-4e35-a1e5-35ad4ad3ca33",
+                        "name": "Saúde",
+                        "icon": "MdSanitizer",
+                        "iconColor": "#EF4F20",
+                        "transactions": [],
+                        "count": 0,
+                        "sum": 0
+                      }
+                    ],
+                    "totalValue": 0,
+                    "transactionsAmount": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ou sessão não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "examples": {
+                  "token": {
+                    "value": {
+                      "message": "Token não encontrado."
+                    }
+                  },
+                  "sessão": {
+                    "value": {
+                      "message": "Sessão não encontrada."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expirado ou inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "example": {
+                  "message": "Token expirado ou inválido."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/create": {
+      "post": {
+        "summary": "Cria uma transação.",
+        "tags": ["Transação"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionBody"
+              },
+              "example": {
+                "value": 12345,
+                "description": "uma descrição",
+                "note": "uma descrição longa",
+                "date": "2022-08-21T00:00:00.000Z",
+                "categoryId": "d8c38eb7-5ed9-4d3c-97bb-5f6a2e8fadb5"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Conteúdo obtido com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                },
+                "example": {
+                  "id": "609d10d4-33ba-4cdd-8e9c-f254d5d4ce4e",
+                  "note": "uma descrição longa",
+                  "description": "uma descrição",
+                  "value": 12345,
+                  "date": "2022-08-21T00:00:00.000Z",
+                  "userId": "28479a76-8bba-4e3e-ba3a-bef829f08be6",
+                  "categoryId": "d8c38eb7-5ed9-4d3c-97bb-5f6a2e8fadb5",
+                  "createdAt": "2022-12-31T23:05:01.344Z",
+                  "updatedAt": "2022-12-31T23:05:01.344Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Corpo da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidBodySchemaError"
+                },
+                "example": {
+                  "message": "Corpo da requisição inválido",
+                  "details": [
+                    "O campo 'descrição' não pode estar vazio",
+                    "O campo 'valor' não pose ser igual a 0",
+                    "O campo 'categoryId' deve ser do tipo GUID"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ou sessão não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "examples": {
+                  "token": {
+                    "value": {
+                      "message": "Token não encontrado."
+                    }
+                  },
+                  "sessão": {
+                    "value": {
+                      "message": "Sessão não encontrada."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expirado ou inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "example": {
+                  "message": "Token expirado ou inválido."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/delete/{transactionId}": {
+      "delete": {
+        "summary": "Deleta uma transação.",
+        "tags": ["Transação"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "Id da transação",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transação deletada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                },
+                "example": {
+                  "id": "609d10d4-33ba-4cdd-8e9c-f254d5d4ce4e",
+                  "note": "uma descrição longa",
+                  "description": "uma descrição",
+                  "value": 12345,
+                  "date": "2022-08-21T00:00:00.000Z",
+                  "userId": "28479a76-8bba-4e3e-ba3a-bef829f08be6",
+                  "categoryId": "d8c38eb7-5ed9-4d3c-97bb-5f6a2e8fadb5",
+                  "createdAt": "2022-12-31T23:05:01.344Z",
+                  "updatedAt": "2022-12-31T23:05:01.344Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidBodySchemaError"
+                },
+                "example": {
+                  "message": "Corpo da requisição inválido",
+                  "details": [
+                    "O parâmetro 'transactionId' deve ser do tipo GUID",
+                    "O parâmetro 'transactionId' é obrigatório"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ou sessão não encontrada, ou a transação não pertence ao usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "examples": {
+                  "token": {
+                    "value": {
+                      "message": "Token não encontrado."
+                    }
+                  },
+                  "sessão": {
+                    "value": {
+                      "message": "Sessão não encontrada."
+                    }
+                  },
+                  "usuário": {
+                    "value": {
+                      "message": "A transação não pertence ao usuário."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transação não encontrada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "example": {
+                  "message": "Sessão não encontrada."
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expirado ou inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "example": {
+                  "message": "Token expirado ou inválido."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/update/{transactionId}": {
+      "put": {
+        "summary": "Atualiza uma transação.",
+        "tags": ["Transação"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "Id da transação",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionBody"
+              },
+              "example": {
+                "value": 12345,
+                "description": "uma descrição",
+                "note": "uma descrição longa",
+                "date": "2022-08-21T00:00:00.000Z",
+                "categoryId": "d8c38eb7-5ed9-4d3c-97bb-5f6a2e8fadb5"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transação atualizada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                },
+                "example": {
+                  "id": "609d10d4-33ba-4cdd-8e9c-f254d5d4ce4e",
+                  "note": "uma descrição longa",
+                  "description": "uma descrição",
+                  "value": 12345,
+                  "date": "2022-08-21T00:00:00.000Z",
+                  "userId": "28479a76-8bba-4e3e-ba3a-bef829f08be6",
+                  "categoryId": "d8c38eb7-5ed9-4d3c-97bb-5f6a2e8fadb5",
+                  "createdAt": "2022-12-31T23:05:01.344Z",
+                  "updatedAt": "2022-12-31T23:05:01.344Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro da requisição inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidBodySchemaError"
+                },
+                "examples": {
+                  "param": {
+                    "value": {
+                      "message": "Corpo da requisição inválido",
+                      "details": [
+                        "O parâmetro 'transactionId' deve ser do tipo GUID",
+                        "O parâmetro 'transactionId' é obrigatório"
+                      ]
+                    }
+                  },
+                  "body": {
+                    "value": {
+                      "message": "Corpo da requisição inválido",
+                      "details": [
+                        "O campo 'descrição' não pode estar vazio",
+                        "O campo 'valor' não pose ser igual a 0",
+                        "O campo 'categoryId' deve ser do tipo GUID"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ou sessão não encontrada, ou a transação não pertence ao usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "examples": {
+                  "token": {
+                    "value": {
+                      "message": "Token não encontrado."
+                    }
+                  },
+                  "sessão": {
+                    "value": {
+                      "message": "Sessão não encontrada."
+                    }
+                  },
+                  "usuário": {
+                    "value": {
+                      "message": "A transação não pertence ao usuário."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transação não encontrada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "example": {
+                  "message": "Sessão não encontrada."
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expirado ou inválido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomError"
+                },
+                "example": {
+                  "message": "Token expirado ou inválido."
                 }
               }
             }
@@ -191,7 +664,7 @@
       "SigninResponse": {
         "type": "object",
         "properties": {
-          "token": {
+          "accessToken": {
             "type": "string"
           }
         }
@@ -217,6 +690,65 @@
             "type": "string"
           }
         }
+      },
+      "TransactionBody": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "date": {
+            "type": "date"
+          },
+          "categoryId": {
+            "type": "string"
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "date": {
+            "type": "date"
+          },
+          "categoryId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "date"
+          },
+          "updatedAt": {
+            "type": "date"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

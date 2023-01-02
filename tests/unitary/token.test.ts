@@ -1,8 +1,4 @@
-import {
-  generateRefreshToken,
-  generateToken,
-  validateRefreshToken,
-} from '../../src/utils/handleToken';
+import { generateToken, validateToken } from '../../src/utils/handleToken';
 import { generatePayload } from '../factories/userFactory';
 import { sign, verify } from 'jsonwebtoken';
 
@@ -12,19 +8,26 @@ describe('generate token', () => {
 
     const result = generateToken(payload);
 
+    const SECRET_KEY = `${process.env.JWT_ACCESS_TOKEN_SECRET_KEY}`;
+
     expect(typeof result).toBe('string');
-    const SECRET_KEY = `${process.env.JWT_SECRET_KEY}`;
-    expect(verify(result, SECRET_KEY)).toHaveProperty('id');
+    expect(verify(result, SECRET_KEY)).toHaveProperty('userId');
   });
 
   it('shold generate a refresh token with success', async () => {
-    const payload = generatePayload();
+    const payload = generatePayload({
+      type: 'refresh',
+    });
 
-    const result = generateRefreshToken(payload);
+    const token = generateToken(payload);
 
-    expect(typeof result).toBe('string');
     const SECRET_KEY = `${process.env.JWT_REFRESH_TOKEN_SECRET_KEY}`;
-    expect(verify(result, SECRET_KEY)).toHaveProperty('id');
+    const decodedPayload = verify(token, SECRET_KEY);
+
+    expect(typeof token).toBe('string');
+    expect(decodedPayload).toHaveProperty('userId');
+    expect(decodedPayload).toHaveProperty('name');
+    expect(decodedPayload).toHaveProperty('sessionId');
   });
 });
 
@@ -37,10 +40,11 @@ describe('validate token', () => {
       `${process.env.JWT_REFRESH_TOKEN_SECRET_KEY}`
     );
 
-    const result = validateRefreshToken(refreshToken);
+    const result = validateToken(refreshToken, 'refresh');
 
-    expect(result).toHaveProperty('id');
+    expect(result).toHaveProperty('userId');
     expect(result).toHaveProperty('name');
+    expect(result).toHaveProperty('sessionId');
   });
 
   it('shold not validate a refresh token', async () => {
@@ -52,7 +56,7 @@ describe('validate token', () => {
       { expiresIn: 1 }
     );
     setTimeout(() => {
-      const result = validateRefreshToken(refreshToken);
+      const result = validateToken(refreshToken, 'refresh');
 
       expect(result).toHaveProperty('message');
       expect(result).toHaveProperty('statusCode');

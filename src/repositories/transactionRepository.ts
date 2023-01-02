@@ -12,7 +12,8 @@ async function findTransactionById(id: string) {
 }
 
 async function deleteTransaction(id: string) {
-  await prisma.transaction.delete({ where: { id } });
+  const transaction = await prisma.transaction.delete({ where: { id } });
+  return transaction;
 }
 
 async function updateTransaction(id: string, data: TransactionBody) {

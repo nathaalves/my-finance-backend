@@ -19,8 +19,8 @@ transactionRouter.post(
 );
 
 transactionRouter.delete(
-  '/delete/:id',
-  validateSchema.params(transactionSchema.paramsSchema),
+  '/delete/:transactionId',
+  validateSchema.params(transactionSchema.transactionIdParamsSchema),
   verifyToken('access'),
   verifyIfSessionExists,
   transactionMiddleware.verifyIfTransactionExists,
@@ -29,8 +29,8 @@ transactionRouter.delete(
 );
 
 transactionRouter.put(
-  '/update/:id',
-  validateSchema.params(transactionSchema.paramsSchema),
+  '/update/:transactionId',
+  validateSchema.params(transactionSchema.transactionIdParamsSchema),
   validateSchema.body(transactionSchema.bodySchema),
   verifyToken('access'),
   verifyIfSessionExists,

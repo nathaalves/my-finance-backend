@@ -1,19 +1,11 @@
 import { generateSignupInformations } from '../factories/userFactory';
 import { app } from '../../src/app';
-import { initDB, disconnectDB } from '../../src/config/database';
-import { cleanDb } from '../cleanDB';
 import supertest from 'supertest';
+import { setTests } from '../setTests';
 
 const request = supertest(app);
 
-beforeAll(async () => {
-  await initDB();
-  await cleanDb();
-});
-
-afterEach(async () => {
-  await cleanDb();
-});
+setTests();
 
 describe('Register', () => {
   it('should create a new user sending valid informations', async () => {
@@ -85,8 +77,4 @@ describe('Register', () => {
 
     expect(result.status).toBe(409);
   });
-});
-
-afterAll(async () => {
-  await disconnectDB();
 });
