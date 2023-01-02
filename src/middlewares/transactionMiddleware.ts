@@ -31,7 +31,7 @@ async function verifyTransactionBelongsUser(
   const { userId } = res.locals.payload;
 
   if (transaction?.userId !== userId) {
-    throw new CustomError('Transação não pertence ao usuário.', 401);
+    throw new CustomError('A transação não pertence ao usuário.', 401);
   }
 
   next();
