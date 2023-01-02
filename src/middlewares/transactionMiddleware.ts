@@ -7,9 +7,11 @@ async function verifyIfTransactionExists(
   res: Response,
   next: NextFunction
 ) {
-  const { id } = req.params;
+  const { transactionId } = req.params;
 
-  const transaction = await transactionRepository.findTransactionById(id);
+  const transaction = await transactionRepository.findTransactionById(
+    transactionId
+  );
 
   if (!transaction) {
     throw new CustomError('Transação não encontrada.', 404);
