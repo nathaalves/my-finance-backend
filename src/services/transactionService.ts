@@ -10,7 +10,8 @@ async function insertData(data: TransactionBody, userId: string) {
 }
 
 async function deleteTransaction(id: string) {
-  await transactionRepository.deleteTransaction(id);
+  const transaction = await transactionRepository.deleteTransaction(id);
+  return transaction;
 }
 
 async function updateTransaction(id: string, data: TransactionBody) {
