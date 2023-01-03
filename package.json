@@ -12,6 +12,8 @@
     "dev:load-env": "dotenv -e .env.development",
     "predev": "npm run dev:load-env -- npx prisma migrate dev",
     "dev": "npm run dev:load-env nodemon src/server.ts",
+    "dev:services:up": "docker-compose -f ./docker-compose.development.yml up --build",
+    "dev:services:down": "docker-compose -f ./docker-compose.development.yml down",
     "studio": "npm run dev:load-env npx prisma studio"
   },
   "keywords": [],
