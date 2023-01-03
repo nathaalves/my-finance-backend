@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    env_file:
+      - .env.development
+    ports:
+      - 6000:5432
+    volumes:
+      - my_finance_data:/var/lib/postgresql/data
+
+  my_finance:
+    container_name: my_finance
+    build: .
+    env_file:
+      - .env.development
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    working_dir: /usr/src/
+    command: bash -c "npm run dev"
+volumes:
+  my_finance_data:
