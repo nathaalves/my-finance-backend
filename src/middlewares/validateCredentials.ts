@@ -7,7 +7,7 @@ export const validateCredentials = (
   next: NextFunction
 ) => {
   const origin = req.headers.origin;
-
+  console.log(origin);
   if (!origin) {
     return next();
   }
