@@ -1,8 +1,6 @@
 export const allowedOrigins = [
-  'http://127.0.0.1:4173',
-  'http://localhost:4173',
-  'http://127.0.0.1:5174',
-  'http://localhost:5174',
+  `http://127.0.0.1:${process.env.PORT || 5000}`,
+  `http://localhost:${process.env.PORT || 5000}`,
   'http://127.0.0.1:5173',
   'http://localhost:5173',
   'https://my-finance-frontend.vercel.app',
