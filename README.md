@@ -73,6 +73,7 @@ http://localhost/5000/api-docs
 
 - [x] Cadastro do usuário;
 - [x] Login na aplicação;
+- [x] Logout;
 - [x] Refresh token;
 - [ ] Recuperação de senha;
 - [ ] Memorização da senha;
