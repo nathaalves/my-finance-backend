@@ -24,6 +24,8 @@ describe('Register', () => {
     const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(409);
+    expect(result.body).toHaveProperty('message');
+    expect(result.body.message).toBe('Usuário já registrado.');
   });
 
   it('should not accept registration if email is invalid', async () => {
@@ -34,6 +36,8 @@ describe('Register', () => {
     const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(400);
+    expect(result.body).toHaveProperty('message');
+    expect(result.body).toHaveProperty('details');
   });
 
   it('shold not accept registration if name is invalid', async () => {
@@ -44,6 +48,8 @@ describe('Register', () => {
     const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(400);
+    expect(result.body).toHaveProperty('message');
+    expect(result.body).toHaveProperty('details');
   });
 
   it('shold not accept registration if password or caonfirm_password is invalid', async () => {
@@ -55,6 +61,8 @@ describe('Register', () => {
     const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(400);
+    expect(result.body).toHaveProperty('message');
+    expect(result.body).toHaveProperty('details');
   });
 
   it('shold not accept registration if password and caonfirm_password contains less than 8 characters', async () => {
@@ -66,6 +74,8 @@ describe('Register', () => {
     const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(400);
+    expect(result.body).toHaveProperty('message');
+    expect(result.body).toHaveProperty('details');
   });
 
   it('shold not accept registration if password does not matchs with caonfirm_password', async () => {
@@ -76,5 +86,6 @@ describe('Register', () => {
     const result = await request.post('/auth/signup').send(userInfo);
 
     expect(result.status).toBe(409);
+    expect(result.body).toHaveProperty('message');
   });
 });
