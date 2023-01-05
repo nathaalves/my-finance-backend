@@ -12,7 +12,7 @@ async function verifyIfUserAlreadyRegistered(
 ) {
   const { email } = req.body;
 
-  const user = await findUserByEmail(email);
+  const user = await findUserByEmail(email.toLocaleLowerCase());
 
   if (user) {
     throw new CustomError('Usuário já registrado', 409);
@@ -28,7 +28,7 @@ async function verifyIfUserExists(
 ) {
   const { email } = req.body;
 
-  const user = await findUserByEmail(email);
+  const user = await findUserByEmail(email.toLocaleLowerCase());
 
   if (!user) {
     throw new CustomError('Email ou senha inválido', 401);

@@ -8,7 +8,7 @@ async function encryptPassword(userData: UserData) {
   const password_hash = createHash(password);
   const { id } = await addUser({
     name,
-    email,
+    email: email.toLocaleLowerCase(),
     password_hash,
   });
 
