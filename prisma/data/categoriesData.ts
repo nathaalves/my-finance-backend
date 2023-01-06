@@ -42,7 +42,7 @@ export const categories = [
     iconColor: '#4EA993',
   },
   {
-    name: 'Salario',
+    name: 'Salário',
     type: 'entradas',
     icon: 'MdAccountBalanceWallet',
     iconColor: '#4EA993',
